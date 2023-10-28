@@ -1,27 +1,63 @@
-name: Remote update Execution
+name: Build and Deploy
+
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v2
+      
+      # - name: Set up SSH
+      #   uses: actions/setup-node@v2
+      
+      # - name: Install Dependencies and Build
+      #   run: |
+      #     sudo apt-get install sshpass
+      #     sshpass -p '1011Technologies@' ssh -tt root@85.31.233.29
 
-    - name: Set Up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+        - name: executing remote ssh commands using password
+          uses: appleboy/ssh-action@v1.0.0
+          env:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                password: ${{ secrets.PASSWORD }}
+                port: ${{ secrets.PORT }}
+                script: whoami
 
-    - name: Install Dependencies
-      run: npm install
 
-    - name: Build
-      run: npm run build
+      # - name: executing remote ssh commands using password
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_KEY }}
 
-    - name: Test
-      run: npm test
+          
+  # deploy:
+  #   runs-on: ubuntu-latest
+    
+  #   steps:
+  #     - name: Set up SSH
+  #       run: |
+  #         mkdir -p ~/.ssh
+  #         echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+  #         chmod 600 ~/.ssh/id_rsa
+  #         ssh-keyscan -t rsa $HOSTNAME >> ~/.ssh/known_hosts
+
+  #     - name: Deploy to Staging
+  #       run: |
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu && rm -rf pipeline-staging"
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu && mkdir pipeline-staging"
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging && git clone https://gitlab+deploy-token-2272113:2xea47Mx1Brp3Tz-eaw_@gitlab.com/Codistan/yourbakingconnection/user-panel.git"
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && git checkout staging"
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && rm -rf .env"
+  #         scp -r .env $HOSTNAME@$PUBLIC_KEY:/home/ubuntu/pipeline-staging/user-panel
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && sed -i 's/next start/PORT=4002 next start/g' package.json"
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && npm install --legacy-peer-deps"
+  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && npm run build"

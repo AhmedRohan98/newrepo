@@ -10,54 +10,39 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # - name: Checkout Repository
-      #   uses: actions/checkout@v2
-      
-      # - name: Set up SSH
-      #   uses: actions/setup-node@v2
-      
-      # - name: Install Dependencies and Build
-      #   run: |
-      #     sudo apt-get install sshpass
-      #     sshpass -p '1011Technologies@' ssh -tt root@85.31.233.29
-
-        - name: executing remote ssh commands using password
-          uses: appleboy/ssh-action@v0.1.9
-          with:
-                host: ${{ secrets.HOST }}
-                username: ${{ secrets.USERNAME }}
-                password: ${{ secrets.PASSWORD }}
-                port: ${{ secrets.PORT }}
-                script: whoami
-
-
-      # - name: executing remote ssh commands using password
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     key: ${{ secrets.SSH_KEY }}
-
-          
-  # deploy:
-  #   runs-on: ubuntu-latest
-    
-  #   steps:
-  #     - name: Set up SSH
-  #       run: |
-  #         mkdir -p ~/.ssh
-  #         echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-  #         chmod 600 ~/.ssh/id_rsa
-  #         ssh-keyscan -t rsa $HOSTNAME >> ~/.ssh/known_hosts
-
-  #     - name: Deploy to Staging
-  #       run: |
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu && rm -rf pipeline-staging"
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu && mkdir pipeline-staging"
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging && git clone https://gitlab+deploy-token-2272113:2xea47Mx1Brp3Tz-eaw_@gitlab.com/Codistan/yourbakingconnection/user-panel.git"
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && git checkout staging"
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && rm -rf .env"
-  #         scp -r .env $HOSTNAME@$PUBLIC_KEY:/home/ubuntu/pipeline-staging/user-panel
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && sed -i 's/next start/PORT=4002 next start/g' package.json"
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && npm install --legacy-peer-deps"
-  #         ssh $HOSTNAME@$PUBLIC_KEY "cd /home/ubuntu/pipeline-staging/user-panel && npm run build"
+      - name: executing remote ssh commands
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: 3.208.159.168
+          username: ubuntu
+          key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEogIBAAKCAQEAlYGu4ZRjgQAOV+rfXGqI/BMpxreYWR3vwoNq0k4MUekuZL56
+            NKRJMYwXBE1qEvJE75cEHSOo2BZia2DZeMgJNvgLxqwUTPwEpqRYMcH+KnokVXLh
+            7JIMjPwrsEetIyYm+pVFqomqdGbmczz7nZp8P9FOWNAMTrmc1/KFmPeih/ZrWBpN
+            G4byLrsW1iw/ACgMCow1Tdf4Y+D7Y7ebEhTuywrocW1atWFTORGhNKUC560jBADv
+            zqX0grxQ+Qd5ZWQ/ji4HM+8QqfGbi/FL2hT6bKxU0on3Ifjud0C7AMV/h/gP26RQ
+            4aiyJLQCTK7bBljy9KVTFT+LDU1nwQY0ZDuZJQIDAQABAoIBAByU80r65F74FMXo
+            CBWR5GhUfYsY9E4tM/X6y8Qy2ZYbPxxRcel4cum+/3N6HUpL+LPZKhcsBw5wkRY4
+            KLs3etOAbjfoE+V31KfLCXVRwfZ67VFMqjZg4XdeijekLExo8dC8Etp8gRLJzUrA
+            oNXLf+9vY0wFUiUGxR5fpfzNcswNGvpKHx7/r2R+2SokyodGs+ffTfKQj2xPWMAO
+            79Qa6Yox3smGzU8jeey7O4oSerNIIJ1kOiJUPMV9/xMqKRuO44yImt/2h4L+6WEY
+            FjKADF5edxc6An6PwM/CmrFEA8uesKQSezZhk4XrByFwC7j3121ltMlTRlBUtk0Y
+            OY8ScsECgYEA60RZrpsVjtpdWJxjC3GJ2c0Mjagx1m0/+5pPFubA0T8+TodW8nuz
+            Xnd9p3m9JMIWsd/co5uWuNJYQfpDwjT01JGeOEiUiP9ktkbhPp/Wr0IzNeiTcf9e
+            3xP8Cs7V7TRRg17LKNXpZ+0tWBpH4NNCoMsdiTLHs+rWgFMXtsctyPUCgYEAoq6R
+            c8uOnnptXEreVdyvqZNFOKjtoGcn6hQ9I+PXGHoDtVOr0EosSh6LCnqFsZvQbokf
+            dv6PgcdCeepoqZD/73u7KGxGaiFgsTUYZxP9DhWYKz220SH718e6Fa+5kSYtmliJ
+            e+I2SpMX+v+P9jw/+ZUAzp/WD/x1lVsKiAHzMXECgYAdPievjlNFqFrF8tpUx84M
+            pnITAX8AWiAD1BBUlmYNHEFQXX4vMbT/3vZdZMJf2Ugc3+h65ZH8cxjJSqQ1dYOh
+            EGCMOmlMBgKsrW696/wxWJco8jmxh75xF/jSFxd8Hm6rV5MFBmG2q0JhmxKoHVpA
+            xj5rmUY9VMlItgtSirtkKQKBgG9VTt/TWDhnCr7V0hEq5eEEk6PyICXdUvikfy83
+            tzXeEvmeWIBEssjK3FcAgMyLGPr8xtbV4fpsFrd+z7/0JuOLZwuEBjCNxTGhZ6Dr
+            kgx4hNpa8ulu+36yBkzfJP0MBruRig2JQ6SHxCqXibt3gkTZT2MZChOIsCPV2YA4
+            7WlRAoGAVDY/rEuLCg41j7W3gKKETITcAB4RySkLSqRMANpftr/hBmn45dcKGu8N
+            S9AjcJfJ2VNPlNu5R/qhsqX41cMPJ6zKDaF5nUL7B+UKsAPgwJxCuAf4Sxgc1AzW
+            UXpUnQ9BqO1fuMfYqnrNy3Ba8xm7IxfmaZFkUCuK6NfMTr1zS6U=
+            -----END RSA PRIVATE KEY-----
+          port: 22
+          script: |
+            touch test.txt

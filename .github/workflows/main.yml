@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: executing remote ssh commands
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            touch test.txt
+        - name: executing remote ssh commands using password
+          uses: appleboy/ssh-action@master
+          with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USER }}
+                key: ${{ secrets.KEY }}
+                port: ${{ secrets.PORT }}
+                script: |
+                    ls

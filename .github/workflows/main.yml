@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Test RDP Connection
 
 on:
   push:
@@ -6,16 +6,44 @@ on:
       - main
 
 jobs:
-  build:
+  test-connection:
     runs-on: ubuntu-latest
-    
+
     steps:
-        - name: executing remote ssh commands using password
-          uses: appleboy/ssh-action@master
-          with:
-                host: ${{ secrets.HOST }}
-                username: ${{ secrets.USER }}
-                key: ${{ secrets.KEY }}
-                port: ${{ secrets.PORT }}
-                script: |
-                    touch text.txt
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+
+    - name: Connect to RDP Server
+      env:
+        RDP_SERVER: "3.12.47.85"   # Replace with your RDP server's IP
+        RDP_USER: "Administrator"           # Replace with your RDP username
+        RDP_PASSWORD: "GOh8YyU80mmrex1s$O.1C1vZQ2oI2eQd"       # Replace with your RDP password
+      run: |
+        echo "Testing connection to $RDP_SERVER..."
+        sshpass -p "$RDP_PASSWORD" ssh -o StrictHostKeyChecking=no $RDP_USER@$RDP_SERVER 'echo "Connected successfully!"'
+
+
+# name: Build and Deploy
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#         - name: executing remote ssh commands using password
+#           uses: appleboy/ssh-action@master
+#           with:
+#                 host: ${{ secrets.HOST }}
+#                 username: ${{ secrets.USER }}
+#                 key: ${{ secrets.KEY }}
+#                 port: ${{ secrets.PORT }}
+#                 script: |
+#                     touch text.txt
